@@ -1,0 +1,363 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap');
+
+/* ================================================================= */
+/* ## 1. Root Variables & Color Palette (Light Cyber Sunset) */
+/* ================================================================= */
+
+:root {
+  --ion-font-family: 'Prompt', sans-serif;
+  --accent-font: 'Orbitron', sans-serif;
+  
+  /* Color Pallette: Sunset Orange, Electric Violet, Deep Rose */
+  --ion-color-primary: #ff9900; /* Sunset Orange / Gold */
+  --ion-color-primary-rgb: 255, 153, 0;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-shade: #e08700;
+
+  --ion-color-secondary: #cc00ff; /* Electric Violet / Deep Purple */
+  --ion-color-secondary-rgb: 204, 0, 255;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-shade: #b300e0;
+
+  --ion-color-tertiary: #ff00a2; /* Deep Rose / Pink */
+  --ion-color-tertiary-rgb: 255, 0, 162;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-shade: #e0008f;
+
+  /* LIGHT BACKGROUND */
+  --ion-background-color: #f7d067; /* Light Gold/Orange */
+  --ion-background-color-rgb: 247, 208, 103;
+  
+  /* Text Colors */
+  --ion-text-color: #1a1a1a; /* ข้อความดำสำหรับพื้นหลังสว่าง */
+  
+  /* Neon Glow Effects - Sunset/Violet Glitch */
+  --neon-orange: 0 0 10px #ff9900, 0 0 20px rgba(255, 153, 0, 0.5);
+  --neon-violet: 0 0 10px #cc00ff, 0 0 20px rgba(204, 0, 255, 0.5);
+}
+
+/* ================================================================= */
+/* ## 2. Keyframes Animations */
+/* ================================================================= */
+
+@keyframes textGlitch {
+  0% {
+      text-shadow: 1px 0 0 var(--ion-color-primary), -1px 0 0 var(--ion-color-secondary);
+      transform: translate(0, 0);
+  }
+  20% {
+      text-shadow: -2px 0 0 var(--ion-color-secondary), 2px 0 0 var(--ion-color-primary);
+      transform: translate(0, -1px);
+  }
+  40% {
+      text-shadow: 2px 0 0 var(--ion-color-primary), -2px 0 0 var(--ion-color-secondary);
+      transform: translate(0, 1px);
+  }
+  60% {
+      text-shadow: -1px 0 0 var(--ion-color-secondary), 1px 0 0 var(--ion-color-primary);
+      transform: translate(0, -0.5px);
+  }
+  80% {
+      text-shadow: 0.5px 0 0 var(--ion-color-primary), -0.5px 0 0 var(--ion-color-secondary);
+      transform: translate(0, 0.5px);
+  }
+  100% {
+      text-shadow: 1px 0 0 var(--ion-color-primary), -1px 0 0 var(--ion-color-secondary);
+      transform: translate(0, 0);
+  }
+}
+
+@keyframes scanline {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  5% { opacity: 0.8; }
+  10% { opacity: 1; }
+  15% { opacity: 0.9; }
+  20% { opacity: 1; }
+}
+
+@keyframes initialGlitchIn {
+  0% {
+      opacity: 0;
+      transform: scale(0.8) translateY(100px) skewX(20deg);
+      filter: blur(10px) brightness(3);
+  }
+  50% {
+      transform: scale(1.05) translateY(-5px) skewX(-5deg);
+      filter: blur(2px) brightness(1.5);
+  }
+  100% {
+      opacity: 1;
+      transform: scale(1) translateY(0) skewX(0);
+      filter: blur(0) brightness(1);
+  }
+}
+
+/* ================================================================= */
+/* ## 3. Content & Background Styling */
+/* ================================================================= */
+
+ion-content {
+  --background: var(--ion-background-color);
+  position: relative;
+}
+
+ion-content::before { /* Background Static Noise - ปรับให้จางลง */
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg, 
+      rgba(255, 153, 0, 0.08) 0px, /* Orange */
+      rgba(204, 0, 255, 0.08) 1px /* Violet */
+    );
+  background-size: 100% 2px;
+  opacity: 0.3;
+  animation: flicker 10s infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ================================================================= */
+/* ## 4. Toolbar & Title Styling */
+/* ================================================================= */
+
+ion-toolbar {
+  --background: rgba(255, 192, 97, 0.95); /* Light Orange/Yellowish */
+  --color: var(--ion-text-color); /* ข้อความดำหลัก */
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  --min-height: 70px;
+  backdrop-filter: blur(20px) contrast(1.2);
+  border-bottom: 2px solid var(--ion-color-secondary);
+  box-shadow: 0 5px 20px rgba(204, 0, 255, 0.5); 
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+ion-toolbar::before { /* เส้น Glitch/Scanline */
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: 
+    repeating-linear-gradient(
+      -45deg, 
+      var(--ion-color-primary) 0, 
+      var(--ion-color-primary) 1px, 
+      var(--ion-color-secondary) 1px, 
+      var(--ion-color-secondary) 2px
+    );
+  box-shadow: 0 0 15px var(--neon-violet);
+  animation: flicker 0.5s infinite alternate;
+}
+
+/* --- เพิ่มสไตล์ปุ่มบวกกลับเข้ามา --- */
+ion-buttons ion-button[color="primary"] ion-icon {
+  color: var(--ion-color-primary); /* สีส้ม */
+  filter: drop-shadow(var(--neon-orange));
+  font-size: 32px; /* ทำให้ใหญ่ขึ้น */
+  transition: all 0.3s ease;
+}
+
+ion-buttons ion-button[color="primary"]:hover ion-icon {
+  color: var(--ion-color-secondary); /* เปลี่ยนเป็นม่วงเมื่อโฮเวอร์ */
+  filter: drop-shadow(var(--neon-violet));
+  transform: scale(1.1);
+}
+/* ------------------------------------- */
+
+ion-title {
+  font-family: var(--accent-font);
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--ion-text-color); 
+  text-shadow: 
+    -2px -2px 0 var(--ion-color-primary), 
+    2px 2px 0 var(--ion-color-secondary), 
+    0 0 15px rgba(255, 255, 255, 0.5); 
+  animation: none; /* ปิด Glitch Animation บน Title เมื่อพื้นหลังสว่าง */
+}
+
+/* ================================================================= */
+/* ## 5. Item Cards (List Items) Styling */
+/* ================================================================= */
+
+ion-item {
+  --background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.9) 100%); /* พื้นหลังสว่าง/ขาว */
+  --color: var(--ion-text-color); 
+  --border-radius: 4px; /* กลับมาใช้ค่าที่ดูดีขึ้น */
+  
+  margin-bottom: 20px; /* ลดระยะห่างด้านล่าง */
+  border: 1px solid rgba(255, 153, 0, 0.6); 
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.3), 
+    inset 0 0 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s linear;
+  overflow: hidden;
+  position: relative;
+
+  /* Initial Animation */
+  animation: initialGlitchIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  animation-fill-mode: both;
+}
+
+/* Stagger animation */
+ion-item:nth-child(1) { animation-delay: 0.1s; }
+ion-item:nth-child(2) { animation-delay: 0.15s; }
+ion-item:nth-child(3) { animation-delay: 0.2s; }
+ion-item:nth-child(4) { animation-delay: 0.25s; }
+ion-item:nth-child(5) { animation-delay: 0.3s; }
+
+ion-item::before { /* Glitch Edge Effect */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(90deg, transparent 50%, var(--ion-color-secondary) 50.1%, transparent 50.2%), 
+    linear-gradient(0deg, transparent 50%, var(--ion-color-primary) 50.1%, transparent 50.2%); 
+  background-size: 100% 10px, 10px 100%;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+ion-item:hover {
+  transform: scale(1.01) skewX(1deg);
+  border-color: var(--ion-color-secondary); 
+  box-shadow: 
+    0 10px 40px rgba(204, 0, 255, 0.5), 
+    0 0 50px rgba(255, 153, 0, 0.3), 
+    inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+ion-item:hover::before {
+  opacity: 0.1;
+}
+
+ion-item:active {
+  transform: scale(1.01) skewX(-2deg);
+  border-color: var(--ion-color-primary); 
+  box-shadow: 
+    0 0 20px var(--ion-color-primary), 
+    0 0 40px var(--ion-color-secondary); 
+}
+
+/* Thumbnail */
+ion-thumbnail {
+  --size: 90px; /* ลดขนาด Thumbnail */
+  --border-radius: 4px;
+  margin: 10px;
+  border: 3px solid var(--ion-color-secondary); 
+  box-shadow: var(--neon-violet);
+}
+
+ion-thumbnail ion-img {
+  filter: saturate(1.5) contrast(1.3);
+}
+
+ion-item:hover ion-thumbnail {
+  border-color: var(--ion-color-primary); 
+  box-shadow: var(--neon-orange);
+}
+
+/* Label Glitch */
+ion-label h2 {
+  font-family: var(--accent-font);
+  color: var(--ion-text-color) !important; 
+  text-shadow: 1px 1px 0 rgba(255, 153, 0, 0.2); 
+  transition: all 0.2s;
+}
+
+ion-item:hover ion-label h2 {
+  color: var(--ion-color-secondary) !important; 
+  text-shadow: var(--neon-violet); 
+  animation: textGlitch 0.5s linear infinite;
+}
+
+ion-label p {
+  color: #555555 !important; 
+  font-size: 14px !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* ================================================================= */
+/* ## 6. Form Styling (Add Memory Page) */
+/* ================================================================= */
+
+form ion-item {
+  --background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.95) 100%); /* พื้นหลังฟอร์มสว่าง */
+  --border-radius: 8px;
+  border: 1px solid rgba(255, 153, 0, 0.4);
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+form ion-item:focus-within {
+  border-color: var(--ion-color-primary); 
+  box-shadow: var(--neon-orange);
+  transform: none;
+}
+
+form ion-label {
+  --color: var(--ion-text-color); 
+  font-family: var(--accent-font);
+  text-shadow: none;
+}
+
+form ion-item.item-has-focus ion-label,
+form ion-item.item-has-value ion-label {
+  --color: #cc00ff; 
+  text-shadow: var(--neon-violet);
+}
+
+form ion-input,
+form ion-textarea {
+  --color: var(--ion-text-color); 
+  --placeholder-color: #777777;
+}
+
+/* Save Button - Glitch Core */
+form ion-button[type="submit"] {
+  --background: linear-gradient(135deg, var(--ion-color-secondary) 0%, var(--ion-color-tertiary) 100%); 
+  --background-hover: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-tertiary) 100%); 
+  --color: #ffffff;
+  --border-radius: 4px;
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+  --box-shadow: 0 0 30px var(--neon-violet), 0 0 50px rgba(204, 0, 255, 0.5); 
+  
+  margin-top: 40px;
+  font-size: 18px;
+  letter-spacing: 4px;
+  font-family: var(--accent-font);
+  transition: all 0.1s linear;
+  animation: flicker 4s infinite alternate;
+}
+
+form ion-button[type="submit"]:hover {
+  --box-shadow: 
+    0 0 30px var(--neon-orange), 
+    0 0 60px rgba(255, 153, 0, 0.8);
+  transform: skewX(-2deg) scale(1.01);
+}
+
+form ion-button[type="submit"]:active {
+  transform: skewX(1deg) scale(0.99);
+}
